@@ -59,9 +59,12 @@ class GNN(torch.nn.Module):
 
     def bn(self, i, x):
         batch_size, num_nodes, num_channels = x.size()
-
+        print("whole")
+        print(x.size())
         x = x.view(-1, num_channels)
         x = getattr(self, 'bn{}'.format(i))(x)
+        print("attr")
+        print(x.size())
         x = x.view(batch_size, num_nodes, num_channels)
         return x
 

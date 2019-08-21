@@ -16,12 +16,14 @@ class MyFilter(object):
         return data.num_nodes <= max_nodes
 
 
-path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'ENZYMES_d')
+path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'PROTEINS')
 dataset = TUDataset(
     path,
-    name='ENZYMES',
+    name='PROTEINS',
     transform=T.ToDense(max_nodes),
     pre_filter=MyFilter())
+
+
 dataset = dataset.shuffle()
 n = (len(dataset) + 9) // 10
 test_dataset = dataset[:n]
