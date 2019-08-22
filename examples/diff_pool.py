@@ -3,6 +3,7 @@ from math import ceil
 
 import torch
 import torch.nn.functional as F
+from minisom import MiniSom
 from torch_geometric.datasets import TUDataset
 import torch_geometric.transforms as T
 from torch_geometric.data import DenseDataLoader
@@ -101,13 +102,21 @@ class Net(torch.nn.Module):
         self.lin2 = torch.nn.Linear(64, 6)
 
     def forward(self, x, adj, mask=None):
-        s = self.gnn1_pool(x, adj, mask)
+        som1 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
+        data1 = x.view(-1,3)
+        som1.train_batch(data1,100)
         x = self.gnn1_embed(x, adj, mask)
+        qnt1 = som1.quantization(data1)
+        s = self.gnn1_pool(qnt1, adj, mask)
 
         x, adj, l1, e1 = dense_diff_pool(x, adj, s, mask)
 
-        s = self.gnn2_pool(x, adj)
+        som2 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
+        data2 = x.view(-1,3)
+        som2.train_batch(data2,100)
         x = self.gnn2_embed(x, adj)
+        qnt2 = som2.quantization(data2)
+        s = self.gnn2_pool(qnt2, adj)
 
         x, adj, l2, e2 = dense_diff_pool(x, adj, s)
 
