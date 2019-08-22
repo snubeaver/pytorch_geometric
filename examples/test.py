@@ -70,7 +70,7 @@ class GNN(torch.nn.Module):
 
     def forward(self, x, adj, mask=None):
         batch_size, num_nodes, in_channels = x.size()
-
+        print(">>>>>>>>>>>>>>>>>>>>>new forward>>>>>>>>")
         x0 = x
         x1 = self.bn(1, F.relu(self.conv1(x0, adj, mask, self.add_loop)))
         x2 = self.bn(2, F.relu(self.conv2(x1, adj, mask, self.add_loop)))
@@ -102,11 +102,13 @@ class Net(torch.nn.Module):
         self.lin2 = torch.nn.Linear(64, 6)
 
     def forward(self, x, adj, mask=None):
+        print("//////////////first pool///////////////")
         s = self.gnn1_pool(x, adj, mask)
+        print('size of s: ',s.size())
         x = self.gnn1_embed(x, adj, mask)
 
         x, adj, l1, e1 = dense_diff_pool(x, adj, s, mask)
-
+        print("//////////////second pool///////////////")
         s = self.gnn2_pool(x, adj)
         x = self.gnn2_embed(x, adj)
 

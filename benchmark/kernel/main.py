@@ -29,18 +29,18 @@ datasets = ['MUTAG', 'PROTEINS', 'IMDB-BINARY', 'REDDIT-BINARY']  # , 'COLLAB']
 nets = [
     GCNWithJK,
     GraphSAGEWithJK,
-    GIN0WithJK,
-    GINWithJK,
-    Graclus,
-    TopK,
-    SAGPool,
+#    GIN0WithJK,
+#    GINWithJK,
+#    Graclus,
+#    TopK,
+#    SAGPool,
     DiffPool,
-    GCN,
-    GraphSAGE,
-    GIN0,
-    GIN,
-    GlobalAttentionNet,
-    Set2SetNet,
+#    GCN,
+#    GraphSAGE,
+#    GIN0,
+#    GIN,
+#    GlobalAttentionNet,
+#    Set2SetNet,
     SortPool,
 ]
 
@@ -73,7 +73,7 @@ for dataset_name, Net in product(datasets, nets):
         if loss < best_result[0]:
             best_result = (loss, acc, std)
 
-    desc = '{:.3f} ± {:.3f}'.format(best_result[1], best_result[2])
+    desc = '{:.3f} + {:.3f}'.format(best_result[1], best_result[2])
     print('Best result - {}'.format(desc))
     results += ['{} - {}: {}'.format(dataset_name, model, desc)]
 print('-----\n{}'.format('\n'.join(results)))
