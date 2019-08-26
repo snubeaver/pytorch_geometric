@@ -1,6 +1,6 @@
 import os.path as osp
 from math import ceil
-
+import numpy as np
 import torch
 import torch.nn.functional as F
 from minisom import MiniSom
@@ -102,29 +102,35 @@ class Net(torch.nn.Module):
         self.lin2 = torch.nn.Linear(64, 6)
 
     def forward(self, x, adj, mask=None):
-        som1 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
-        data1 = x.reshape(-1,3)
-        data1 = data1.cpu().numpy()
-        som1.train_batch(data1,10)
-        x = self.gnn1_embed(x, adj, mask)
-        qnt1 = som1.quantization(data1)
-        qnt1 = torch.from_numpy(qnt1).float().to(device)
-        qnt1 = qnt1.reshape(-1,100,3)
+        som1 = MiniSom(8,8,3, sigma=0.3, learning_rate=0.5)
+        qnt = []
+        for i in range(x.size()[0]):
+        
+            data1 = x[i]
+            data1 = data1.cpu().numpy()
+            som1.train_random(data1,10)
+            temp = []
+            np.append(temp, som1.quantization(data1))
+            np.append(qnt,temp)
 
-        s = self.gnn1_pool(qnt1, adj, mask)
+        #qnt = torch.cat(qnt, dim=-1)
+        x = self.gnn1_embed(x, adj, mask)
+        qnt = torch.from_numpy(qnt).float().to(device)
+
+        s = self.gnn1_pool(qnt, adj, mask)
 
         x, adj, l1, e1 = dense_diff_pool(x, adj, s, mask)
 
-        som2 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
-        data2 = x.reshape(-1,3)
-        data2 = data2.cpu().detach().numpy()
-        som2.train_batch(data2,10)
+        #som2 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
+        #data2 = x.reshape(-1,3)
+        #data2 = data2.cpu().detach().numpy()
+        #som2.train_batch(data2,10)
         x = self.gnn2_embed(x, adj)
-        qnt2 = som2.quantization(data2)
+        #qnt2 = som2.quantization(data2)
         
-        qnt2 = torch.from_numpy(qnt2).float().to(device)
-        qnt2 = qnt2.reshape(-1,25,64*3)
-        s = self.gnn2_pool(qnt2, adj)
+        #qnt2 = torch.from_numpy(qnt2).float().to(device)
+        #qnt2 = qnt2.reshape(-1,25,64*3)
+        s = self.gnn2_pool(x, adj)
 
         x, adj, l2, e2 = dense_diff_pool(x, adj, s)
 

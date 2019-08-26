@@ -1,4 +1,4 @@
-from math import ceil
+from math import ceil, sqrt
 
 import torch
 from minisom import MiniSom
@@ -30,7 +30,7 @@ class Block(torch.nn.Module):
         return self.lin(self.jump([x1, x2]))
 
 
-class DiffPool(torch.nn.Module):
+class SOMPool(torch.nn.Module):
     def __init__(self, dataset, num_layers, hidden, ratio=0.25):
         super(DiffPool, self).__init__()
 
@@ -67,8 +67,11 @@ class DiffPool(torch.nn.Module):
 
     def forward(self, data):
         x, adj, mask = data.x, data.adj, data.mask
-
-        s = self.pool_block1(x, adj, mask, add_loop=True)
+        somn = ceil(sqrt(num_nodes))
+        som = Minisom(somn,somn, num_features, sigma=0.3, learning_rate=0.5)
+        som.train_batch(x,5)
+        qnt = som.quantization(x)
+        s = self.pool_block1(qnt, adj, mask, add_loop=True)
         x = F.relu(self.embed_block1(x, adj, mask, add_loop=True))
         xs = [x.mean(dim=1)]
         x, adj, _, _ = dense_diff_pool(x, adj, s, mask)
