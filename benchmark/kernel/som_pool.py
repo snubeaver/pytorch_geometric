@@ -1,11 +1,10 @@
-from math import ceil, sqrt
+from math import ceil
 
 import torch
-from minisom import MiniSom
 import torch.nn.functional as F
 from torch.nn import Linear
 from torch_geometric.nn import DenseSAGEConv, dense_diff_pool, JumpingKnowledge
-
+from minisom import MiniSom
 
 class Block(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels, mode='cat'):
@@ -32,16 +31,11 @@ class Block(torch.nn.Module):
 
 class SOMPool(torch.nn.Module):
     def __init__(self, dataset, num_layers, hidden, ratio=0.25):
-        super(DiffPool, self).__init__()
+        super(SOMPool, self).__init__()
 
         num_nodes = ceil(ratio * dataset[0].num_nodes)
-        for i in range(dataset[0].num_nodes/2):
-            if i*i>num_nodes:
-                num_nodes = i*i
-                break
         self.embed_block1 = Block(dataset.num_features, hidden, hidden)
         self.pool_block1 = Block(dataset.num_features, hidden, num_nodes)
-        
 
         self.embed_blocks = torch.nn.ModuleList()
         self.pool_blocks = torch.nn.ModuleList()
@@ -67,11 +61,8 @@ class SOMPool(torch.nn.Module):
 
     def forward(self, data):
         x, adj, mask = data.x, data.adj, data.mask
-        somn = ceil(sqrt(num_nodes))
-        som = Minisom(somn,somn, num_features, sigma=0.3, learning_rate=0.5)
-        som.train_batch(x,5)
-        qnt = som.quantization(x)
-        s = self.pool_block1(qnt, adj, mask, add_loop=True)
+
+        s = self.pool_block1(x, adj, mask, add_loop=True)
         x = F.relu(self.embed_block1(x, adj, mask, add_loop=True))
         xs = [x.mean(dim=1)]
         x, adj, _, _ = dense_diff_pool(x, adj, s, mask)
