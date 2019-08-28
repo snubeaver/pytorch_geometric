@@ -1,10 +1,11 @@
-from math import ceil
+from math import ceil, sqrt
 
 import torch
 import torch.nn.functional as F
 from torch.nn import Linear
 from torch_geometric.nn import DenseSAGEConv, dense_diff_pool, JumpingKnowledge
 from minisom import MiniSom
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class Block(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels, mode='cat'):
@@ -33,13 +34,16 @@ class SOMPool(torch.nn.Module):
     def __init__(self, dataset, num_layers, hidden, ratio=0.25):
         super(SOMPool, self).__init__()
 
-        num_nodes = ceil(ratio * dataset[0].num_nodes)
+        self.num_nodes = ceil(ratio * dataset[0].num_nodes)
         self.embed_block1 = Block(dataset.num_features, hidden, hidden)
-        self.pool_block1 = Block(dataset.num_features, hidden, num_nodes)
+        self.pool_block1 = Block(dataset.num_features, hidden, self.num_nodes)
 
         self.embed_blocks = torch.nn.ModuleList()
         self.pool_blocks = torch.nn.ModuleList()
         for i in range((num_layers // 2) - 1):
+            self.somnum = ceil(sqrt(num_nodes))
+            self.dimnum = hidden
+            self.numnod = num_nodes
             num_nodes = ceil(ratio * num_nodes)
             self.embed_blocks.append(Block(hidden, hidden, hidden))
             self.pool_blocks.append(Block(hidden, hidden, num_nodes))
@@ -69,7 +73,14 @@ class SOMPool(torch.nn.Module):
 
         for i, (embed_block, pool_block) in enumerate(
                 zip(self.embed_blocks, self.pool_blocks)):
-            s = pool_block(x, adj)
+            som = MiniSom(self.somnum,self.somnum, self.dimnum, sigma=0.3, learning_rate=0.5)
+            tempdata = x.reshape(-1,self.dimnum)
+            tempdata = tempdata.cpu().numpy()
+            som.train_batch(tempdata,10)
+            qnt = som.quantization(tempdata)
+            qnt = torch.from_numpy(qnt).float().to(device)
+            qnt = qnt.reshape(-1, self.num_nodes, self.dimnum)
+            s = pool_block(qnt, adj)
             x = F.relu(embed_block(x, adj))
             xs.append(x.mean(dim=1))
             if i < len(self.embed_blocks) - 1:
@@ -83,3 +94,4 @@ class SOMPool(torch.nn.Module):
 
     def __repr__(self):
         return self.__class__.__name__
+

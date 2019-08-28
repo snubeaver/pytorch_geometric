@@ -17,10 +17,10 @@ class MyFilter(object):
         return data.num_nodes <= max_nodes
 
 
-path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'PROTEINS')
+path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'data', 'ENZYMES_d')
 dataset = TUDataset(
     path,
-    name='',
+    name='ENZYMES',
     transform=T.ToDense(max_nodes),
     pre_filter=MyFilter())
 
@@ -102,29 +102,30 @@ class Net(torch.nn.Module):
         self.lin2 = torch.nn.Linear(64, 6)
 
     def forward(self, x, adj, mask=None):
-        som1 = MiniSom(8,8,3, sigma=0.3, learning_rate=0.5)
-        data1 = x.reshape(-1,3)
-        data1 = data1.cpu().numpy()
-        som1.train_batch(data1,5)
+        #som1 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
+        #data1 = x.reshape(-1,3)
+        #data1 = data1.cpu().numpy()
+        #som1.train_batch(data1,10)
+        x_ = x
         x = self.gnn1_embed(x, adj, mask)
-        qnt1 = som1.quantization(data1)
-        qnt1 = torch.from_numpy(qnt1).float().to(device)
-        qnt1 = qnt1.reshape(-1,100,3)
-
-        s = self.gnn1_pool(qnt1, adj, mask)
+        #qnt1 = som1.quantization(data1)
+        #qnt1 = torch.from_numpy(qnt1).float().to(device)
+        #qnt1 = qnt1.reshape(-1,100,3)
+        s = self.gnn1_pool(x_,adj,mask)
+        #s = self.gnn1_pool(qnt1, adj, mask)
 
         x, adj, l1, e1 = dense_diff_pool(x, adj, s, mask)
 
-        #som2 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
-        #data2 = x.reshape(-1,3)
-        #data2 = data2.cpu().detach().numpy()
-        #som2.train_batch(data2,10)
+        som2 = MiniSom(5,5,32, sigma=0.3, learning_rate=0.5)
+        data2 = x.reshape(-1,32)
+        data2 = data2.cpu().detach().numpy()
+        som2.train_batch(data2,10)
         x = self.gnn2_embed(x, adj)
-        #qnt2 = som2.quantization(data2)
+        qnt2 = som2.quantization(data2)
         
-        #qnt2 = torch.from_numpy(qnt2).float().to(device)
-        #qnt2 = qnt2.reshape(-1,25,64*3)
-        s = self.gnn2_pool(x, adj)
+        qnt2 = torch.from_numpy(qnt2).float().to(device)
+        qnt2 = qnt2.reshape(-1,25,64*3)
+        s = self.gnn2_pool(qnt2, adj)
 
         x, adj, l2, e2 = dense_diff_pool(x, adj, s)
 

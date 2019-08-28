@@ -102,21 +102,22 @@ class Net(torch.nn.Module):
         self.lin2 = torch.nn.Linear(64, 6)
 
     def forward(self, x, adj, mask=None):
-        som1 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
-        data1 = x.reshape(-1,3)
-        data1 = data1.cpu().numpy()
-        som1.train_batch(data1,10)
+        #som1 = MiniSom(5,5,3, sigma=0.3, learning_rate=0.5)
+        #data1 = x.reshape(-1,3)
+        #data1 = data1.cpu().numpy()
+        #som1.train_batch(data1,10)
+        x_ = x
         x = self.gnn1_embed(x, adj, mask)
-        qnt1 = som1.quantization(data1)
-        qnt1 = torch.from_numpy(qnt1).float().to(device)
-        qnt1 = qnt1.reshape(-1,100,3)
-
-        s = self.gnn1_pool(qnt1, adj, mask)
+        #qnt1 = som1.quantization(data1)
+        #qnt1 = torch.from_numpy(qnt1).float().to(device)
+        #qnt1 = qnt1.reshape(-1,100,3)
+        s = self.gnn1_pool(x_,adj,mask)
+        #s = self.gnn1_pool(qnt1, adj, mask)
 
         x, adj, l1, e1 = dense_diff_pool(x, adj, s, mask)
 
-        som2 = MiniSom(5,5,64*3, sigma=0.3, learning_rate=0.5)
-        data2 = x.reshape(-1,64*3)
+        som2 = MiniSom(5,5,64, sigma=0.3, learning_rate=0.5)
+        data2 = x.reshape(-1,64)
         data2 = data2.cpu().detach().numpy()
         som2.train_batch(data2,10)
         x = self.gnn2_embed(x, adj)

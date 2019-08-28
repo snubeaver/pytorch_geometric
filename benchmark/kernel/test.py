@@ -14,6 +14,7 @@ from sag_pool import SAGPool
 from global_attention import GlobalAttentionNet
 from set2set import Set2SetNet
 from sort_pool import SortPool
+from som_pool import SOMPool
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--epochs', type=int, default=100)
@@ -27,13 +28,14 @@ layers = [1, 2, 3, 4, 5]
 hiddens = [16, 32, 64, 128]
 datasets = ['MUTAG', 'PROTEINS', 'IMDB-BINARY', 'REDDIT-BINARY']  # , 'COLLAB']
 nets = [
-    GCNWithJK,
-    GraphSAGEWithJK,
+#    GCNWithJK,
+#    GraphSAGEWithJK,
 #    GIN0WithJK,
 #    GINWithJK,
 #    Graclus,
 #    TopK,
-#    SAGPool,
+    SAGPool,
+#    SOMPool,
     DiffPool,
 #    GCN,
 #    GraphSAGE,
@@ -41,7 +43,7 @@ nets = [
 #    GIN,
 #    GlobalAttentionNet,
 #    Set2SetNet,
-    SortPool,
+#    SortPool,
 ]
 
 

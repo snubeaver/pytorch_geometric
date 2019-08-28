@@ -1,0 +1,28 @@
+Script started on Wed Aug 28 08:04:21 2019
+$ python tem st.py
+-----
+MUTAG - SAGPool
+Val Loss: 0.5216, Test Accuracy: 0.690 + 0.073, Duration: 2.603
+Val Loss: 0.5128, Test Accuracy: 0.739 + 0.045, Duration: 2.654
+Val Loss: 0.5036, Test Accuracy: 0.739 + 0.084, Duration: 2.434
+Val Loss: 0.4903, Test Accuracy: 0.739 + 0.074, Duration: 2.486
+Val Loss: 0.5324, Test Accuracy: 0.660 + 0.034, Duration: 2.615
+Val Loss: 0.5093, Test Accuracy: 0.740 + 0.060, Duration: 2.887
+-Val Loss: 0.4931, Test Accuracy: 0.751 + 0.101, Duration: 3.055
+Val Loss: 0.4898, Test Accuracy: 0.768 + 0.076, Duration: 2.908
+Traceback (most recent call last):
+  File "test.py", line 74, in <module>
+    logger=None)
+  File "/home/user/pytorch_geometric/benchmark/kernel/train_eval.py", line 50, in cross_validation_with_val_set
+    train_loss = train(model, optimizer, train_loader)
+  File "/home/user/pytorch_geometric/benchmark/kernel/train_eval.py", line 120, in train
+    out = model(data)
+  File "/home/user/miniconda/envs/py36/lib/python3.6/site-packages/torch/nn/modules/module.py", line 493, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/user/pytorch_geometric/benchmark/kernel/sag_pool.py", line 43, in forward
+    batch=batch)
+ValueError: not enough values to unpack (expected 6, got 5)
+$ ^C
+$ 
+
+Script done on Wed Aug 28 08:30:06 2019
