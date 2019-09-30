@@ -9,6 +9,7 @@ from graph_sage import GraphSAGE, GraphSAGEWithJK
 from gin import GIN0, GIN0WithJK, GIN, GINWithJK
 from graclus import Graclus
 from top_k import TopK
+from diffk import DiffK
 from diff_pool import DiffPool
 from sag_pool import SAGPool
 from global_attention import GlobalAttentionNet
@@ -34,8 +35,9 @@ nets = [
 #    GINWithJK,
 #    Graclus,
 #    TopK,
-    SAGPool,
+#    SAGPool,
 #    SOMPool,
+    DiffK,
     DiffPool,
 #    GCN,
 #    GraphSAGE,
