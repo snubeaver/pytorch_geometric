@@ -69,7 +69,7 @@ class SOMPool(torch.nn.Module):
         som = MiniSom(somnum,somnum, self.dimnum, sigma=0.3, learning_rate=0.5)
         tempdata = x.reshape(-1,self.dimnum)
         tempdata = tempdata.cpu().numpy()
-        som.train_batch(tempdata,100)
+        som.train_batch(tempdata,15)
         qnt = som.quantization(tempdata)
         qnt = torch.from_numpy(qnt).float().to(device)
         qnt = qnt.reshape( adj.size()[0],-1, self.dimnum)

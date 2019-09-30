@@ -21,14 +21,17 @@ def cross_validation_with_val_set(dataset,
                                   weight_decay,
                                   logger=None):
 
+    #print(dataset)
+    #print(model)
+    #print(batch_size)
     val_losses, accs, durations = [], [], []
     for fold, (train_idx, test_idx, val_idx) in enumerate(
             zip(*k_fold(dataset, folds))):
-
+        #print(train_idx)
         train_dataset = dataset[train_idx]
         test_dataset = dataset[test_idx]
         val_dataset = dataset[val_idx]
-
+        #print(train_dataset[0])
         if 'adj' in train_dataset[0]:
             train_loader = DenseLoader(train_dataset, batch_size, shuffle=True)
             val_loader = DenseLoader(val_dataset, batch_size, shuffle=False)
@@ -112,11 +115,13 @@ def num_graphs(data):
 
 def train(model, optimizer, loader):
     model.train()
-
+    #print(loader)
     total_loss = 0
     for data in loader:
         optimizer.zero_grad()
+        #print(data)
         data = data.to(device)
+        #print(data)
         out = model(data)
         loss = F.nll_loss(out, data.y.view(-1))
         loss.backward()

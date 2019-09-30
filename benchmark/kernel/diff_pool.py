@@ -60,8 +60,9 @@ class DiffPool(torch.nn.Module):
         self.lin2.reset_parameters()
 
     def forward(self, data):
+        #print(data)
         x, adj, mask = data.x, data.adj, data.mask
-
+        #print(x.size())
         s = self.pool_block1(x, adj, mask, add_loop=True)
         x = F.relu(self.embed_block1(x, adj, mask, add_loop=True))
         xs = [x.mean(dim=1)]
