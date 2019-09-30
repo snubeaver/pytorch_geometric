@@ -3,7 +3,7 @@ import torch
 EPS = 1e-15
 
 
-def dense_diff_pool(x, adj, s, mask=None):
+def dense_diffk(x, adj, s, mask=None):
     r"""Differentiable pooling operator from the `"Hierarchical Graph
     Representation Learning with Differentiable Pooling"
     <https://arxiv.org/abs/1806.08804>`_ paper
