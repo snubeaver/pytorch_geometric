@@ -9,6 +9,7 @@ from graph_sage import GraphSAGE, GraphSAGEWithJK
 from gin import GIN0, GIN0WithJK, GIN, GINWithJK
 from graclus import Graclus
 from top_k import TopK
+from diffk import DiffK
 from diff_pool import DiffPool
 from sag_pool import SAGPool
 from global_attention import GlobalAttentionNet
@@ -24,9 +25,10 @@ parser.add_argument('--lr_decay_factor', type=float, default=0.5)
 parser.add_argument('--lr_decay_step_size', type=int, default=50)
 args = parser.parse_args()
 
-layers = [1, 2, 3, 4, 5]
+layers = [1, 2, 3]
 hiddens = [16, 32, 64, 128]
-datasets = ['MUTAG', 'PROTEINS', 'IMDB-BINARY', 'REDDIT-BINARY']  # , 'COLLAB']
+#datasets = ['MUTAG', 'PROTEINS']#, 'IMDB-BINARY', 'REDDIT-BINARY']  # , 'COLLAB']
+datasets = [ 'REDDIT-BINARY']  # , 'COLLAB']
 nets = [
 #    GCNWithJK,
 #    GraphSAGEWithJK,
@@ -34,9 +36,10 @@ nets = [
 #    GINWithJK,
 #    Graclus,
 #    TopK,
+#    SAGPool,
 #    SOMPool,
-    SOMPool,
-    DiffPool,
+    DiffK,
+#    DiffPool,
 #    GCN,
 #    GraphSAGE,
 #    GIN0,
@@ -59,7 +62,7 @@ for dataset_name, Net in product(datasets, nets):
     best_result = (float('inf'), 0, 0)  # (loss, acc, std)
     print('-----\n{} - {}'.format(dataset_name, Net.__name__))
     for num_layers, hidden in product(layers, hiddens):
-        dataset = get_dataset(dataset_name, sparse=Net !=  SOMPool)
+        dataset = get_dataset(dataset_name, sparse=Net != DiffK)
         model = Net(dataset, num_layers, hidden)
         loss, acc, std = cross_validation_with_val_set(
             dataset,

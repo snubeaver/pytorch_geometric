@@ -1,0 +1,71 @@
+Script started on Mon Sep 30 09:22:57 2019
+$ python baseline_diff.py
+python: can't open file 'baseline_diff.py': [Errno 2] No such file or directory
+$ ^[[A    opy   python baseline_diffpool.py
+-----
+MUTAG - DiffPool
+Val Loss: 0.3905, Test Accuracy: 0.833 + 0.086, Duration: 9.524
+Val Loss: 0.3587, Test Accuracy: 0.839 + 0.080, Duration: 9.600
+Val Loss: 0.3515, Test Accuracy: 0.854 + 0.096, Duration: 11.038
+Val Loss: 0.3594, Test Accuracy: 0.843 + 0.090, Duration: 9.720
+Val Loss: 0.3863, Test Accuracy: 0.859 + 0.100, Duration: 10.335
+Val Loss: 0.3691, Test Accuracy: 0.843 + 0.068, Duration: 10.469
+Val Loss: 0.3588, Test Accuracy: 0.826 + 0.084, Duration: 8.827
+Val Loss: 0.3502, Test Accuracy: 0.833 + 0.078, Duration: 9.830
+Val Loss: 0.3663, Test Accuracy: 0.850 + 0.058, Duration: 9.534
+Val Loss: 0.3630, Test Accuracy: 0.855 + 0.059, Duration: 9.404
+Val Loss: 0.3504, Test Accuracy: 0.838 + 0.089, Duration: 10.887
+Val Loss: 0.3520, Test Accuracy: 0.839 + 0.071, Duration: 10.054
+Val Loss: 0.3634, Test Accuracy: 0.843 + 0.117, Duration: 11.683
+Val Loss: 0.3489, Test Accuracy: 0.833 + 0.098, Duration: 10.516
+Val Loss: 0.3499, Test Accuracy: 0.848 + 0.079, Duration: 10.919
+Val Loss: 0.3458, Test Accuracy: 0.844 + 0.082, Duration: 11.598
+Best result - 0.844 + 0.082
+-----
+PROTEINS - DiffPool
+Val Loss: 0.5234, Test Accuracy: 0.742 + 0.023, Duration: 58.550
+Val Loss: 0.5224, Test Accuracy: 0.737 + 0.028, Duration: 63.498
+Val Loss: 0.5153, Test Accuracy: 0.740 + 0.027, Duration: 60.064
+Val Loss: 0.5171, Test Accuracy: 0.740 + 0.034, Duration: 61.432
+Val Loss: 0.5371, Test Accuracy: 0.741 + 0.034, Duration: 55.902
+Val Loss: 0.5202, Test Accuracy: 0.747 + 0.030, Duration: 36.257
+Val Loss: 0.5186, Test Accuracy: 0.747 + 0.031, Duration: 36.037
+Val Loss: 0.5179, Test Accuracy: 0.745 + 0.036, Duration: 35.144
+Val Loss: 0.5266, Test Accuracy: 0.746 + 0.042, Duration: 28.849
+Val Loss: 0.5208, Test Accuracy: 0.745 + 0.031, Duration: 29.645
+Val Loss: 0.5207, Test Accuracy: 0.743 + 0.036, Duration: 31.025
+Val Loss: 0.5214, Test Accuracy: 0.747 + 0.036, Duration: 32.500
+Val Loss: 0.4994, Test Accuracy: 0.749 + 0.015, Duration: 33.037
+Val Loss: 0.5037, Test Accuracy: 0.746 + 0.024, Duration: 32.912
+Val Loss: 0.4979, Test Accuracy: 0.749 + 0.027, Duration: 33.482
+Val Loss: 0.5122, Test Accuracy: 0.736 + 0.027, Duration: 36.357
+Best result - 0.749 + 0.027
+-----
+IMDB-BINARY - DiffPool
+Val Loss: 0.4968, Test Accuracy: 0.720 + 0.044, Duration: 28.616
+Val Loss: 0.4861, Test Accuracy: 0.733 + 0.044, Duration: 28.620
+Val Loss: 0.4807, Test Accuracy: 0.739 + 0.033, Duration: 28.704
+Val Loss: 0.4851, Test Accuracy: 0.738 + 0.035, Duration: 29.456
+Val Loss: 0.4950, Test Accuracy: 0.738 + 0.035, Duration: 28.730
+Val Loss: 0.4949, Test Accuracy: 0.733 + 0.044, Duration: 28.435
+Val Loss: 0.4829, Test Accuracy: 0.735 + 0.041, Duration: 28.847
+Val Loss: 0.4759, Test Accuracy: 0.741 + 0.043, Duration: 29.141
+Val Loss: 0.5018, Test Accuracy: 0.736 + 0.032, Duration: 28.513
+Val Loss: 0.4903, Test Accuracy: 0.747 + 0.044, Duration: 28.864
+Val Loss: 0.4823, Test Accuracy: 0.743 + 0.043, Duration: 28.555
+Val Loss: 0.4757, Test Accuracy: 0.730 + 0.036, Duration: 29.399
+Val Loss: 0.4890, Test Accuracy: 0.729 + 0.064, Duration: 32.221
+Val Loss: 0.4763, Test Accuracy: 0.732 + 0.028, Duration: 32.326
+Val Loss: 0.4801, Test Accuracy: 0.724 + 0.048, Duration: 32.884
+Val Loss: 0.4745, Test Accuracy: 0.729 + 0.037, Duration: 33.259
+Best result - 0.729 + 0.037
+-----
+REDDIT-BINARY - DiffPool
+Val Loss: 0.3468, Test Accuracy: 0.856 + 0.064, Duration: 251.460
+Val Loss: 0.2763, Test Accuracy: 0.886 + 0.044, Duration: 254.057
+Val Loss: 0.2355, Test Accuracy: 0.912 + 0.033, Duration: 258.972
+Val Loss: 0.2181, Test Accuracy: 0.909 + 0.031, Duration: 263.281
+Val Loss: 0.3428, Test Accuracy: 0.866 + 0.052, Duration: 250.138
+Val Loss: 0.3024, Test Accuracy: 0.861 + 0.046, Duration: 248.665
+Val Loss: 0.2330, Test Accuracy: 0.912 + 0.028, Duration: 257.812
+Val Loss: 0.2193, Test Accuracy: 0.914 + 0.031, Dura

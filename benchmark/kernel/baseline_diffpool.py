@@ -25,9 +25,9 @@ parser.add_argument('--lr_decay_factor', type=float, default=0.5)
 parser.add_argument('--lr_decay_step_size', type=int, default=50)
 args = parser.parse_args()
 
-layers = [1, 2, 3, 4, 5]
+layers = [1, 2, 3, 4]
 hiddens = [16, 32, 64, 128]
-datasets = ['MUTAG', 'PROTEINS']#, 'IMDB-BINARY', 'REDDIT-BINARY']  # , 'COLLAB']
+datasets = ['MUTAG', 'PROTEINS', 'IMDB-BINARY', 'REDDIT-BINARY' , 'COLLAB']
 nets = [
 #    GCNWithJK,
 #    GraphSAGEWithJK,
@@ -37,7 +37,6 @@ nets = [
 #    TopK,
 #    SAGPool,
 #    SOMPool,
-    DiffK,
     DiffPool,
 #    GCN,
 #    GraphSAGE,

@@ -4,7 +4,7 @@ import torch
 import torch.nn.functional as F
 from torch.nn import Linear
 from torch_geometric.nn import DenseSAGEConv, JumpingKnowledge
-from ../../torch_geometric/nn/dense_diffk import dense_diffk
+from dense_diffk import dense_diffk
 
 class Block(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels, mode='cat'):

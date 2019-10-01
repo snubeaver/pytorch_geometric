@@ -1,0 +1,40 @@
+Script started on Mon Sep 30 08:54:26 2019
+$ python test_diffk1.py    .py
+-----
+PROTEINS - DiffK
+Val Loss: 0.5264, Test Accuracy: 0.742 + 0.033, Duration: 32.561
+Val Loss: 0.5217, Test Accuracy: 0.743 + 0.024, Duration: 37.225
+Val Loss: 0.5143, Test Accuracy: 0.749 + 0.023, Duration: 35.907
+Val Loss: 0.5172, Test Accuracy: 0.748 + 0.031, Duration: 40.675
+Val Loss: 0.5281, Test Accuracy: 0.746 + 0.034, Duration: 41.971
+Val Loss: 0.5223, Test Accuracy: 0.751 + 0.015, Duration: 62.916
+Val Loss: 0.5171, Test Accuracy: 0.745 + 0.032, Duration: 60.462
+Val Loss: 0.5186, Test Accuracy: 0.748 + 0.041, Duration: 62.165
+Val Loss: 0.5249, Test Accuracy: 0.744 + 0.019, Duration: 60.992
+Val Loss: 0.5155, Test Accuracy: 0.747 + 0.034, Duration: 61.579
+Val Loss: 0.5195, Test Accuracy: 0.744 + 0.035, Duration: 63.556
+Val Loss: 0.5166, Test Accuracy: 0.752 + 0.038, Duration: 62.604
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [288,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [289,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [291,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [293,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [425,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [445,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [67,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [69,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [71,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [73,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [81,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+/opt/conda/conda-bld/pytorch_1556653183467/work/aten/src/THC/THCTensorScatterGather.cu:188: void THCudaTensor_scatterFillKernel(TensorInfo<Real, IndexType>, TensorInfo<long, IndexType>, Real, int, IndexType) [with IndexType = unsigned int, Real = float, Dims = 2]: block: [26,0,0], thread: [468,0,0] Assertion `indexValue >= 0 && indexValue < tensor.sizes[dim]` failed.
+Traceback (most recent call last):
+  File "test_diffk.py", line 77, in <module>
+    logger=None)
+  File "/home/user/pytorch_geometric/benchmark/kernel/train_eval.py", line 53, in cross_validation_with_val_set
+    train_loss = train(model, optimizer, train_loader)
+  File "/home/user/pytorch_geometric/benchmark/kernel/train_eval.py", line 128, in train
+    total_loss += loss.item() * num_graphs(data)
+RuntimeError: CUDA error: device-side assert triggered
+$ ^[[A^[[B^C
+$ 
+
+Script done on Tue Oct  1 04:59:20 2019
