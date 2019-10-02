@@ -17,16 +17,14 @@ def dense_diffk(x, adj, s, mask=None):
     #s.view(-1, out_node)
 
     inds = torch.topk(s, ceil(in_node*0.4), dim = 1)[1]
-    s= s.view(-1, out_node)
-    inds = inds.view(-1, out_node)
-    print(">>>>>>>>>>>>>>>>")
-    print(s.size())
-    print(inds.size())
-    s.scatter_(0,inds,-inf)
-    s=s.view(batch_size, -1, out_node)
-    #print(inds.size())
-    #s.scatter_(0,inds, -inf)
-
+    #s= s.view(-1, out_node)
+    #inds = inds.view(-1, out_node)
+    
+    init = torch.zeros(s.size(), dtype=torch.float64)
+    init.scatter_(0,inds,1)
+    init.add(-1)
+    init.abs()
+    s.where(init,-inf)
     s = torch.softmax(s, dim=-1)
 
     if mask is not None:
