@@ -68,4 +68,45 @@ Val Loss: 0.2181, Test Accuracy: 0.909 + 0.031, Duration: 263.281
 Val Loss: 0.3428, Test Accuracy: 0.866 + 0.052, Duration: 250.138
 Val Loss: 0.3024, Test Accuracy: 0.861 + 0.046, Duration: 248.665
 Val Loss: 0.2330, Test Accuracy: 0.912 + 0.028, Duration: 257.812
-Val Loss: 0.2193, Test Accuracy: 0.914 + 0.031, Dura
+Val Loss: 0.2193, Test Accuracy: 0.914 + 0.031, Duration: 262.084
+Val Loss: 0.3480, Test Accuracy: 0.865 + 0.063, Duration: 249.949
+Val Loss: 0.2649, Test Accuracy: 0.902 + 0.037, Duration: 250.020
+Val Loss: 0.2393, Test Accuracy: 0.898 + 0.030, Duration: 260.068
+Val Loss: 0.2242, Test Accuracy: 0.910 + 0.034, Duration: 265.029
+Val Loss: 0.2143, Test Accuracy: 0.915 + 0.023, Duration: 263.042
+Val Loss: 0.2031, Test Accuracy: 0.922 + 0.026, Duration: 264.424
+Val Loss: 0.2023, Test Accuracy: 0.925 + 0.032, Duration: 273.124
+Val Loss: 0.2007, Test Accuracy: 0.917 + 0.026, Duration: 282.805
+Best result - 0.917 + 0.026
+-----
+COLLAB - DiffPool
+Downloading https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets/COLLAB.zip
+Extracting /home/user/pytorch_geometric/benchmark/data/COLLAB/COLLAB.zip
+Processing...
+Done!
+Val Loss: 0.4868, Test Accuracy: 0.773 + 0.018, Duration: 809.691
+Val Loss: 0.4717, Test Accuracy: 0.779 + 0.019, Duration: 881.617
+Val Loss: 0.4571, Test Accuracy: 0.790 + 0.022, Duration: 895.027
+Val Loss: 0.4384, Test Accuracy: 0.795 + 0.026, Duration: 895.184
+Val Loss: 0.4774, Test Accuracy: 0.774 + 0.018, Duration: 798.198
+Val Loss: 0.4755, Test Accuracy: 0.779 + 0.020, Duration: 811.877
+Val Loss: 0.4636, Test Accuracy: 0.790 + 0.013, Duration: 823.339
+Val Loss: 0.4474, Test Accuracy: 0.794 + 0.020, Duration: 844.235
+Val Loss: 0.4873, Test Accuracy: 0.774 + 0.016, Duration: 750.430
+Val Loss: 0.4727, Test Accuracy: 0.777 + 0.023, Duration: 753.741
+Val Loss: 0.4497, Test Accuracy: 0.789 + 0.017, Duration: 819.665
+ Val Loss: 0.4442, Test Accuracy: 0.797 + 0.027, Duration: 826.576
+Val Loss: 0.4916, Test Accuracy: 0.767 + 0.016, Duration: 850.631
+Val Loss: 0.4690, Test Accuracy: 0.793 + 0.021, Duration: 833.408
+Val Loss: 0.4605, Test Accuracy: 0.783 + 0.022, Duration: 860.629
+Val Loss: 0.4480, Test Accuracy: 0.796 + 0.022, Duration: 883.454
+Best result - 0.795 + 0.026
+-----
+MUTAG - DiffPool: 0.844 + 0.082
+PROTEINS - DiffPool: 0.749 + 0.027
+IMDB-BINARY - DiffPool: 0.729 + 0.037
+REDDIT-BINARY - DiffPool: 0.917 + 0.026
+COLLAB - DiffPool: 0.795 + 0.026
+$  
+
+Script done on Sat Oct  5 08:09:29 2019
