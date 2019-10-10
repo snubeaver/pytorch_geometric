@@ -15,7 +15,6 @@ def dense_diffk(x, adj, s, mask=None):
 
     _, in_node, out_node = s.size()
     #s.view(-1, out_node)
-
     topk, inds = torch.topk(s, ceil(in_node*0.4), dim = 1)[1]
     s= s.view(-1, out_node)
     inds = inds.view(-1, out_node)
