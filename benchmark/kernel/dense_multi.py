@@ -11,23 +11,21 @@ def dense_diffk(x, adj, s, mask=None):
 
     #print(x.size())
     #print(s.size())
-    batch_size, num_nodes, _ = x.size()
+     batch_size, num_nodes, _ = x.size()
 
     _, in_node, out_node = s.size()
     #s.view(-1, out_node)
-
-    inds = torch.topk(s, ceil(in_node*0.4), dim = 1)[1]
+    topk, inds = torch.topk(s, ceil(in_node*0.4), dim = 1)[1]
     s= s.view(-1, out_node)
     inds = inds.view(-1, out_node)
+    res = Variable(torch.zeros(s.size())
+    res = res.scatter(0, inds, 1)
+    s = s.view(batch_size, -1, out_node)
+    res = res.view(batch_size, -1, out_node)
+    s = torch.mul(s,res)
     #print(">>>>>>>>>>>>>>>>")
     #print(s.size())
     #print(inds.size())
-    s.scatter_(0,inds,-inf)
-    print(s)
-    s=s.view(batch_size, -1, out_node)
-    #print(inds.size())
-    #s.scatter_(0,inds, -inf)
-    
     s = torch.softmax(s, dim=-1)
 
 
