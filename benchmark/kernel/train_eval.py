@@ -118,8 +118,8 @@ def train(model, optimizer, loader):
     for data in loader:
         optimizer.zero_grad()
         data = data.to(device)
-        out = model(data)
-        loss = F.nll_loss(out, data.y.view(-1))
+        out, link_loss, ent_loss = model(data)
+        loss = F.nll_loss(out, data.y.view(-1))+ link_loss + ent_loss
         loss.backward()
         total_loss += loss.item() * num_graphs(data)
         optimizer.step()
