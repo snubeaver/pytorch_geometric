@@ -133,7 +133,8 @@ def eval_acc(model, loader):
     for data in loader:
         data = data.to(device)
         with torch.no_grad():
-            pred, link_loss, ent_loss = model(data).max(1)[1]
+            out, link_loss, ent_loss = model(data)
+            pred = out.max(1)[1]
         correct += pred.eq(data.y.view(-1)).sum().item()
     return correct / len(loader.dataset)
 
