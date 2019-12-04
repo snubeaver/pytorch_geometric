@@ -121,10 +121,12 @@ def train(model, optimizer, loader):
         optimizer.zero_grad()
         data = data.to(device)
         out, link_loss, ent_loss = model(data)
-        loss = F.nll_loss(out, data.y.view(-1))+ link_loss + ent_loss
+        loss = F.nll_loss(out, data.y.view(-1))
         loss.backward()
-        total_link += link_loss
-        total_ent += ent_loss
+        link_loss.backward()
+        ent_loss.backward()
+        total_link += link_loss.item() * num_graphs(data)
+        total_ent += ent_loss.item() * num_graphs(data)
         total_loss += loss.item() * num_graphs(data)
         optimizer.step()
     print("Link Loss : {:.4f}, Ent Loss : {:.4f}".format(total_ent/ len(loader.dataset),total_ent/ len(loader.dataset)))
