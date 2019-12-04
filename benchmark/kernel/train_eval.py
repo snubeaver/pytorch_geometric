@@ -115,14 +115,19 @@ def train(model, optimizer, loader):
     model.train()
 
     total_loss = 0
+    total_link = 0
+    total_ent =0
     for data in loader:
         optimizer.zero_grad()
         data = data.to(device)
         out, link_loss, ent_loss = model(data)
         loss = F.nll_loss(out, data.y.view(-1))+ link_loss + ent_loss
         loss.backward()
+        total_link += link_loss
+        total_ent += ent_loss
         total_loss += loss.item() * num_graphs(data)
         optimizer.step()
+    print("Link Loss : {:.4f}, Ent Loss : {:.4f}".format(total_ent/ len(loader.dataset),total_ent/ len(loader.dataset)))
     return total_loss / len(loader.dataset)
 
 

@@ -23,25 +23,25 @@ parser.add_argument('--lr_decay_factor', type=float, default=0.5)
 parser.add_argument('--lr_decay_step_size', type=int, default=50)
 args = parser.parse_args()
 
-layers = [1, 2, 3, 4, 5]
-hiddens = [16, 32, 64, 128]
+layers = [4]#, 2, 3, 4, 5]
+hiddens = [16]#, 32, 64, 128]
 datasets = ['MUTAG', 'PROTEINS', 'IMDB-BINARY', 'REDDIT-BINARY']  # , 'COLLAB']
 nets = [
-    GCNWithJK,
-    GraphSAGEWithJK,
-    GIN0WithJK,
-    GINWithJK,
-    Graclus,
-    TopK,
-    SAGPool,
+#    GCNWithJK,
+#    GraphSAGEWithJK,
+#    GIN0WithJK,
+#    GINWithJK,
+#    Graclus,
+#    TopK,
+#    SAGPool,
     DiffPool,
-    GCN,
-    GraphSAGE,
-    GIN0,
-    GIN,
-    GlobalAttentionNet,
-    Set2SetNet,
-    SortPool,
+#    GCN,
+#    GraphSAGE,
+#    GIN0,
+#    GIN,
+#    GlobalAttentionNet,
+#    Set2SetNet,
+#    SortPool,
 ]
 
 
@@ -73,7 +73,7 @@ for dataset_name, Net in product(datasets, nets):
         if loss < best_result[0]:
             best_result = (loss, acc, std)
 
-    desc = '{:.3f} ± {:.3f}'.format(best_result[1], best_result[2])
+    desc = '{:.3f} + {:.3f}'.format(best_result[1], best_result[2])
     print('Best result - {}'.format(desc))
     results += ['{} - {}: {}'.format(dataset_name, model, desc)]
 print('-----\n{}'.format('\n'.join(results)))
