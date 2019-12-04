@@ -49,6 +49,8 @@ def dense_diff_pool(x, adj, s, mask=None):
 
     s = torch.softmax(s, dim=-1)
 
+    inv_s = torch.diag(torch.sum(s**s, dim=1))
+
     if mask is not None:
         mask = mask.view(batch_size, num_nodes, 1).to(x.dtype)
         x, s = x * mask, s * mask
