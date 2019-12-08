@@ -25,10 +25,11 @@ def cross_validation_with_val_set(dataset,
     for fold, (train_idx, test_idx, val_idx) in enumerate(
             zip(*k_fold(dataset, folds))):
 
+        print("In {}-fold".format(fold))
         train_dataset = dataset[train_idx]
         test_dataset = dataset[test_idx]
         val_dataset = dataset[val_idx]
-
+        print(val_idx)
         if 'adj' in train_dataset[0]:
             train_loader = DenseLoader(train_dataset, batch_size, shuffle=True)
             val_loader = DenseLoader(val_dataset, batch_size, shuffle=False)
@@ -47,6 +48,7 @@ def cross_validation_with_val_set(dataset,
         t_start = time.perf_counter()
 
         for epoch in range(1, epochs + 1):
+            print("Starting epoch...")
             train_loss = train(model, optimizer, train_loader)
             val_losses.append(eval_loss(model, val_loader))
             accs.append(eval_acc(model, test_loader))
@@ -121,15 +123,16 @@ def train(model, optimizer, loader):
         optimizer.zero_grad()
         data = data.to(device)
         out, link_loss, ent_loss = model(data)
-        loss = F.nll_loss(out, data.y.view(-1))
-        loss.backward()
-        link_loss.backward()
-        ent_loss.backward()
         total_link += link_loss.item() * num_graphs(data)
         total_ent += ent_loss.item() * num_graphs(data)
+        #print(total_ent)
+        loss = F.nll_loss(out, data.y.view(-1))
         total_loss += loss.item() * num_graphs(data)
+        loss.backward(retain_graph=True)
+        link_loss.backward(retain_graph=True)
+        ent_loss.backward(retain_graph=True)
         optimizer.step()
-    print("Link Loss : {:.4f}, Ent Loss : {:.4f}".format(total_ent/ len(loader.dataset),total_ent/ len(loader.dataset)))
+    print("One TRAIN OVER::: Link Loss : {:.4f}, Ent Loss : {:.4f}".format(total_link/ len(loader.dataset),total_ent/ len(loader.dataset)))
     return total_loss / len(loader.dataset)
 
 

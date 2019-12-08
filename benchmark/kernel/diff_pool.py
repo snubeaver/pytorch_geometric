@@ -33,7 +33,10 @@ class DiffPool(torch.nn.Module):
     def __init__(self, dataset, num_layers, hidden, ratio=0.25):
         super(DiffPool, self).__init__()
 
+
         num_nodes = ceil(ratio * dataset[0].num_nodes)
+        print("NUM HIDDEN : {}, NUM NODE : {}".format(hidden, num_nodes))
+
         self.embed_block1 = Block(dataset.num_features, hidden, hidden)
         self.pool_block1 = Block(dataset.num_features, hidden, num_nodes)
 
@@ -66,7 +69,8 @@ class DiffPool(torch.nn.Module):
         x = F.relu(self.embed_block1(x, adj, mask, add_loop=True))
         xs = [x.mean(dim=1)]
         x, adj, link_loss, ent_loss = dense_diff_pool(x, adj, s, mask)
-
+        #print(link_loss)
+        print(s.size())
         for i, (embed_block, pool_block) in enumerate(
                 zip(self.embed_blocks, self.pool_blocks)):
             s = pool_block(x, adj)
@@ -74,7 +78,7 @@ class DiffPool(torch.nn.Module):
             xs.append(x.mean(dim=1))
             if i < len(self.embed_blocks) - 1:
                 x, adj, link_loss, ent_loss= dense_diff_pool(x, adj, s)
-        
+                print(s.size())        
         x = self.jump(xs)
         x = F.relu(self.lin1(x))
         x = F.dropout(x, p=0.5, training=self.training)
