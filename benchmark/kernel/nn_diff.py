@@ -51,12 +51,14 @@ def dense_diff_pool(x, adj, s, mask=None):
     batch_size, num_nodes, _ = x.size()
     # (Batch x current node x next node)
     s = torch.softmax(s, dim=-1)
-    inv_s = torch.diag_emb(torch.sum(s**s, dim=1))
-    degree = torch.diag_emb(adj.sum(dim=-1))
+    inv_s = torch.diag_embed(torch.sum(s**s, dim=-1))
+    degree = torch.diag_embed(adj.sum(dim=-1))
     lap = degree - adj
-    new_lap = torch.matmul(inv_s, torch.matmul(lap, s))
+    import pdb
 
-    _, sec_eigen = torch.eig(lap, True) 
+    new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(lap, s))
+    pdb.set_trace()
+    _, sec_eigen = lap.symeig(eigenvectors=True) 
     x = sec_eigen[:,1]
     spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-newlap), x)**torch.matmul((lap-newlap), x))*torch.sum(x**x)
                             /(2 * torch.matmul(x, torch.matmul(lap,x)) * torch.matmul(x, torch.matmul(new_lap,x)) )

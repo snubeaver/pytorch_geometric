@@ -29,7 +29,7 @@ def cross_validation_with_val_set(dataset,
         train_dataset = dataset[train_idx]
         test_dataset = dataset[test_idx]
         val_dataset = dataset[val_idx]
-        print(val_idx)
+        #print(val_idx)
         if 'adj' in train_dataset[0]:
             train_loader = DenseLoader(train_dataset, batch_size, shuffle=True)
             val_loader = DenseLoader(val_dataset, batch_size, shuffle=False)
