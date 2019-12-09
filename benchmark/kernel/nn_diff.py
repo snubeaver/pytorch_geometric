@@ -1,7 +1,10 @@
 import torch
 
 EPS = 1e-15
-
+def arccosh(x):
+    c0 = torch.log(x)
+    c1 = torch.log1p(torch.sqrt(x * x - 1) / x)
+    return c0 + c1
 
 def dense_diff_pool(x, adj, s, mask=None):
     r"""Differentiable pooling operator from the `"Hierarchical Graph
@@ -46,11 +49,19 @@ def dense_diff_pool(x, adj, s, mask=None):
     s = s.unsqueeze(0) if s.dim() == 2 else s
 
     batch_size, num_nodes, _ = x.size()
-
+    # (Batch x current node x next node)
     s = torch.softmax(s, dim=-1)
-    print(s.size())
-    inv_s = torch.diag(torch.sum(s**s, dim=1))
-    print(inv_s.size())
+    inv_s = torch.diag_emb(torch.sum(s**s, dim=1))
+    degree = torch.diag_emb(adj.sum(dim=-1))
+    lap = degree - adj
+    new_lap = torch.matmul(inv_s, torch.matmul(lap, s))
+
+    _, sec_eigen = torch.eig(lap, True) 
+    x = sec_eigen[:,1]
+    spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-newlap), x)**torch.matmul((lap-newlap), x))*torch.sum(x**x)
+                            /(2 * torch.matmul(x, torch.matmul(lap,x)) * torch.matmul(x, torch.matmul(new_lap,x)) )
+                        )
+
     if mask is not None:
         mask = mask.view(batch_size, num_nodes, 1).to(x.dtype)
         x, s = x * mask, s * mask
@@ -64,4 +75,4 @@ def dense_diff_pool(x, adj, s, mask=None):
 
     ent_loss = (-s * torch.log(s + EPS)).sum(dim=-1).mean()
 
-    return out, out_adj, link_loss, ent_loss
+    return out, out_adj, link_loss, spec_loss

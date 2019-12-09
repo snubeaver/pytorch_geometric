@@ -77,13 +77,13 @@ class DiffPool(torch.nn.Module):
             x = F.relu(embed_block(x, adj))
             xs.append(x.mean(dim=1))
             if i < len(self.embed_blocks) - 1:
-                x, adj, link_loss, ent_loss= dense_diff_pool(x, adj, s)
+                x, adj, link_loss, spec_loss= dense_diff_pool(x, adj, s)
                 #print(s.size())        
         x = self.jump(xs)
         x = F.relu(self.lin1(x))
         x = F.dropout(x, p=0.5, training=self.training)
         x = self.lin2(x)
-        return F.log_softmax(x, dim=-1), link_loss, ent_loss
+        return F.log_softmax(x, dim=-1), link_loss, spec_loss
 
     def __repr__(self):
         return self.__class__.__name__

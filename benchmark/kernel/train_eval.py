@@ -118,21 +118,21 @@ def train(model, optimizer, loader):
 
     total_loss = 0
     total_link = 0
-    total_ent =0
+    total_spec =0
     for data in loader:
         optimizer.zero_grad()
         data = data.to(device)
-        out, link_loss, ent_loss = model(data)
+        out, link_loss, spec_loss = model(data)
         total_link += link_loss.item() * num_graphs(data)
-        total_ent += ent_loss.item() * num_graphs(data)
+        total_spec += spec_loss.item() * num_graphs(data)
         #print(total_ent)
         loss = F.nll_loss(out, data.y.view(-1))
         total_loss += loss.item() * num_graphs(data)
         loss.backward(retain_graph=True)
         link_loss.backward(retain_graph=True)
-        ent_loss.backward(retain_graph=True)
+        spec_loss.backward(retain_graph=True)
         optimizer.step()
-    #print("One TRAIN OVER::: Link Loss : {:.4f}, Ent Loss : {:.4f}".format(total_link/ len(loader.dataset),total_ent/ len(loader.dataset)))
+    print("One TRAIN OVER::: Link Loss : {:.4f}, Spec Loss : {:.4f}".format(total_link/ len(loader.dataset),total_ent/ len(loader.dataset)))
     return total_loss / len(loader.dataset)
 
 
@@ -143,7 +143,7 @@ def eval_acc(model, loader):
     for data in loader:
         data = data.to(device)
         with torch.no_grad():
-            out, link_loss, ent_loss = model(data)
+            out, link_loss, spec_loss = model(data)
             pred = out.max(1)[1]
         correct += pred.eq(data.y.view(-1)).sum().item()
     return correct / len(loader.dataset)
@@ -156,6 +156,6 @@ def eval_loss(model, loader):
     for data in loader:
         data = data.to(device)
         with torch.no_grad():
-            out, link_loss, ent_loss = model(data)
+            out, link_loss, spec_loss = model(data)
         loss += F.nll_loss(out, data.y.view(-1), reduction='sum').item()
     return loss / len(loader.dataset)
