@@ -1,5 +1,6 @@
 import torch
 
+from torch import autograd 
 EPS = 1e-15
 def arccosh(x):
     c0 = torch.log(x)
@@ -57,13 +58,14 @@ def dense_diff_pool(x, adj, s, mask=None):
     import pdb
 
     new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(lap, s))
-    pdb.set_trace()
-    eigen = autograd.Variable(lap.size())
+    #pdb.set_trace()
+    x_eig = autograd.Variable(lap[:,:,0:1])
     for i in range(lap.size(-1)):
         _, sec_eigen = lap[i,:,:].eig(eigenvectors=True) 
-        eigen[i,:,:] = sec_eigen[:,1]
-    spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-new_lap), x)**torch.matmul((lap-new_lap), x))*torch.sum(x**x)
-                            /(2 * torch.matmul(x, torch.matmul(lap,x)) * torch.matmul(x, torch.matmul(new_lap,x)) )
+        x_eig[i,:,0] = sec_eigen[:,1]
+    pdb.set_trace()
+    spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-new_lap), x_eig)**torch.matmul((lap-new_lap), x_eig))*torch.sum(x_eig**x_eig)
+                            /(2 * torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)) * torch.matmul(x_eig.transpose(1,2), torch.matmul(new_lap,x_eig)) )
                         )
 
     if mask is not None:
