@@ -58,9 +58,11 @@ def dense_diff_pool(x, adj, s, mask=None):
 
     new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(lap, s))
     pdb.set_trace()
-    _, sec_eigen = lap.symeig(eigenvectors=True) 
-    x = sec_eigen[:,1]
-    spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-newlap), x)**torch.matmul((lap-newlap), x))*torch.sum(x**x)
+    eigen = autograd.Variable(lap.size())
+    for i in range(lap.size(-1)):
+        _, sec_eigen = lap[i,:,:].eig(eigenvectors=True) 
+        eigen[i,:,:] = sec_eigen[:,1]
+    spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-new_lap), x)**torch.matmul((lap-new_lap), x))*torch.sum(x**x)
                             /(2 * torch.matmul(x, torch.matmul(lap,x)) * torch.matmul(x, torch.matmul(new_lap,x)) )
                         )
 
