@@ -3,8 +3,8 @@ from math import ceil
 import torch
 import torch.nn.functional as F
 from torch.nn import Linear
-from torch_geometric.nn import DenseSAGEConv, dense_diff_pool, JumpingKnowledge
-
+from torch_geometric.nn import DenseSAGEConv, JumpingKnowledge
+from nn_diff import dense_diff_pool
 
 class Block(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels, mode='cat'):
@@ -78,7 +78,7 @@ class DiffPool(torch.nn.Module):
             xs.append(x.mean(dim=1))
             if i < len(self.embed_blocks) - 1:
                 x, adj, link_loss, ent_loss= dense_diff_pool(x, adj, s)
-                print(s.size())        
+                #print(s.size())        
         x = self.jump(xs)
         x = F.relu(self.lin1(x))
         x = F.dropout(x, p=0.5, training=self.training)
