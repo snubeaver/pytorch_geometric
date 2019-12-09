@@ -48,7 +48,7 @@ def cross_validation_with_val_set(dataset,
         t_start = time.perf_counter()
 
         for epoch in range(1, epochs + 1):
-            print("Starting epoch...")
+            #print("Starting epoch...")
             train_loss = train(model, optimizer, train_loader)
             val_losses.append(eval_loss(model, val_loader))
             accs.append(eval_acc(model, test_loader))
@@ -132,7 +132,7 @@ def train(model, optimizer, loader):
         link_loss.backward(retain_graph=True)
         ent_loss.backward(retain_graph=True)
         optimizer.step()
-    print("One TRAIN OVER::: Link Loss : {:.4f}, Ent Loss : {:.4f}".format(total_link/ len(loader.dataset),total_ent/ len(loader.dataset)))
+    #print("One TRAIN OVER::: Link Loss : {:.4f}, Ent Loss : {:.4f}".format(total_link/ len(loader.dataset),total_ent/ len(loader.dataset)))
     return total_loss / len(loader.dataset)
 
 

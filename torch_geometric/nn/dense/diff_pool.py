@@ -40,7 +40,7 @@ def dense_diff_pool(x, adj, s, mask=None):
     :rtype: (:class:`Tensor`, :class:`Tensor`, :class:`Tensor`,
         :class:`Tensor`)
     """
-
+    print("in nn.dense_diff_pool")
     x = x.unsqueeze(0) if x.dim() == 2 else x
     adj = adj.unsqueeze(0) if adj.dim() == 2 else adj
     s = s.unsqueeze(0) if s.dim() == 2 else s

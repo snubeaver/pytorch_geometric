@@ -35,7 +35,7 @@ class DiffPool(torch.nn.Module):
 
 
         num_nodes = ceil(ratio * dataset[0].num_nodes)
-        print("NUM HIDDEN : {}, NUM NODE : {}".format(hidden, num_nodes))
+        #print("NUM HIDDEN : {}, NUM NODE : {}".format(hidden, num_nodes))
 
         self.embed_block1 = Block(dataset.num_features, hidden, hidden)
         self.pool_block1 = Block(dataset.num_features, hidden, num_nodes)
@@ -70,7 +70,7 @@ class DiffPool(torch.nn.Module):
         xs = [x.mean(dim=1)]
         x, adj, link_loss, ent_loss = dense_diff_pool(x, adj, s, mask)
         #print(link_loss)
-        print(s.size())
+        #print(s.size())
         for i, (embed_block, pool_block) in enumerate(
                 zip(self.embed_blocks, self.pool_blocks)):
             s = pool_block(x, adj)
