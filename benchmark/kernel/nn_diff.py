@@ -51,13 +51,17 @@ def dense_diff_pool(x, adj, s, mask=None):
 
     batch_size, num_nodes, _ = x.size()
     # (Batch x current node x next node)
-    s = torch.softmax(s, dim=-1)
-    inv_s = torch.diag_embed(torch.sum(s**s, dim=-1))
-    degree = torch.diag_embed(adj.sum(dim=-1))
+    s = torch.softmax(s, dim=-1)  # 28 x 5
+    diag_s = torch.diag_embed(torch.sum(s**s, dim=-1).pow(-2))   # 28 x 28
+    inv_s = torch.matmul(s.transpose(1,2) , diag_s) # 5 x  28
+    new_adj = torch.matmul(s.transpose(1,2), torch.matmul(adj, s) )
+    degree =  torch.diag_embed(adj.sum(dim=-1)) # 28 x 28
+    new_degree = torch.diag_embed(new_adj.sum(dim=-1)) # 28 x 28
+    o_lap = new_degree - new_adj # 5 x 5
     lap = degree - adj
     import pdb
 
-    new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(lap, s))
+    new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(o_lap, s)) # 28 x 5
     #pdb.set_trace()
     x_eig = autograd.Variable(lap[:,:,0:1])
     for i in range(lap.size(-1)):
