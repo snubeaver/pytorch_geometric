@@ -123,6 +123,7 @@ def train(model, optimizer, loader):
         optimizer.zero_grad()
         data = data.to(device)
         out, link_loss, spec_loss = model(data)
+        #print(spec_loss)
         total_link += link_loss.item() * num_graphs(data)
         total_spec += spec_loss.item() * num_graphs(data)
         #print(total_ent)

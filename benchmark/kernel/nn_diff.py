@@ -61,17 +61,17 @@ def dense_diff_pool(x, adj, s, mask=None):
     lap = degree - adj
     import pdb
 
-    new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(o_lap, s)) # 28 x 5
+    new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(o_lap, inv_s)) # 28 x 5
     #pdb.set_trace()
     x_eig = autograd.Variable(lap[:,:,0:1])
     for i in range(lap.size(-1)):
         _, sec_eigen = lap[i,:,:].eig(eigenvectors=True) 
         x_eig[i,:,0] = sec_eigen[:,1]
-    pdb.set_trace()
+    #pdb.set_trace()
     spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-new_lap), x_eig)**torch.matmul((lap-new_lap), x_eig))*torch.sum(x_eig**x_eig)
                             /(2 * torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)) * torch.matmul(x_eig.transpose(1,2), torch.matmul(new_lap,x_eig)) )
                         )
-
+    print(spec_loss)
     if mask is not None:
         mask = mask.view(batch_size, num_nodes, 1).to(x.dtype)
         x, s = x * mask, s * mask
