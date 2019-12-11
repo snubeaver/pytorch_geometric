@@ -4,6 +4,7 @@ from torch import autograd
 EPS = 1e-15
 def arccosh(x):
     c0 = torch.log(x)
+    #print(c0)
     c1 = torch.log1p(torch.sqrt(x * x - 1) / x)
     return c0 + c1
 
@@ -52,7 +53,7 @@ def dense_diff_pool(x, adj, s, mask=None):
     batch_size, num_nodes, _ = x.size()
     # (Batch x current node x next node)
     s = torch.softmax(s, dim=-1)  # 28 x 5
-    diag_s = torch.diag_embed(torch.sum(s**s, dim=-1).pow(-2))   # 28 x 28
+    diag_s = torch.diag_embed(torch.sum(s*s, dim=-1).pow(-2))   # 28 x 28
     inv_s = torch.matmul(s.transpose(1,2) , diag_s) # 5 x  28
     new_adj = torch.matmul(s.transpose(1,2), torch.matmul(adj, s) )
     degree =  torch.diag_embed(adj.sum(dim=-1)) # 28 x 28
@@ -64,14 +65,15 @@ def dense_diff_pool(x, adj, s, mask=None):
     new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(o_lap, inv_s)) # 28 x 5
     #pdb.set_trace()
     x_eig = autograd.Variable(lap[:,:,0:1])
-    for i in range(lap.size(-1)):
+    for i in range(lap.size(0)):
         _, sec_eigen = lap[i,:,:].eig(eigenvectors=True) 
         x_eig[i,:,0] = sec_eigen[:,1]
-    #pdb.set_trace()
-    spec_loss = arccosh(1 + torch.sum(torch.matmul((lap-new_lap), x_eig)**torch.matmul((lap-new_lap), x_eig))*torch.sum(x_eig**x_eig)
-                            /(2 * torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)) * torch.matmul(x_eig.transpose(1,2), torch.matmul(new_lap,x_eig)) )
+    print(torch.norm(torch.matmul((lap-new_lap),x_eig),p=2))
+    spec_loss = arccosh(1 + torch.matmul(torch.sum(torch.matmul((lap-new_lap), x_eig)*torch.matmul((lap-new_lap), x_eig),(1,2)),torch.matmul(torch.sum(x_eig*x_eig,(1,2)),torch.sum(x_eig*x_eig,(1,2))))
+                            /(2 *torch.matmul( torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)) , torch.matmul(x_eig.transpose(1,2), torch.matmul(new_lap,x_eig)) ))
                         )
-    print(spec_loss)
+    #print(torch.matmul((lap-new_lap), x_eig))
+    #print(torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)))
     if mask is not None:
         mask = mask.view(batch_size, num_nodes, 1).to(x.dtype)
         x, s = x * mask, s * mask
@@ -82,7 +84,7 @@ def dense_diff_pool(x, adj, s, mask=None):
     link_loss = adj - torch.matmul(s, s.transpose(1, 2))
     link_loss = torch.norm(link_loss, p=2)
     link_loss = link_loss / adj.numel()
-
+    print(link_loss)
     ent_loss = (-s * torch.log(s + EPS)).sum(dim=-1).mean()
 
     return out, out_adj, link_loss, spec_loss
