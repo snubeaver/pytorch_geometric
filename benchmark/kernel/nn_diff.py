@@ -69,9 +69,12 @@ def dense_diff_pool(x, adj, s, mask=None):
         _, sec_eigen = lap[i,:,:].eig(eigenvectors=True) 
         x_eig[i,:,0] = sec_eigen[:,1]
     print(torch.norm(torch.matmul((lap-new_lap),x_eig),p=2))
-    spec_loss = arccosh(1 + torch.matmul(torch.sum(torch.matmul((lap-new_lap), x_eig)*torch.matmul((lap-new_lap), x_eig),(1,2)),torch.matmul(torch.sum(x_eig*x_eig,(1,2)),torch.sum(x_eig*x_eig,(1,2))))
-                            /(2 *torch.matmul( torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)) , torch.matmul(x_eig.transpose(1,2), torch.matmul(new_lap,x_eig)) ))
-                        )
+    lapnorm = torch.norm(torch.matmul((lap-new_lap), x_eig),p=2)
+    xnorm = torch.norm(torch.matmul(x_eig.transpose(1,2), x_eig), p=2)
+    spec_loss = arccosh(1 + 
+    lapnorm*lapnorm + xnorm*xnorm*2
+    /(2 * torch.sum(torch.matmul( torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)) , torch.matmul(x_eig.transpose(1,2), torch.matmul(new_lap,x_eig)) ))
+    ))
     #print(torch.matmul((lap-new_lap), x_eig))
     #print(torch.matmul(x_eig.transpose(1,2), torch.matmul(lap,x_eig)))
     if mask is not None:
