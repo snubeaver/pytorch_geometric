@@ -42,7 +42,7 @@ class DiffPool(torch.nn.Module):
 
         self.embed_blocks = torch.nn.ModuleList()
         self.pool_blocks = torch.nn.ModuleList()
-        for i in range((num_layers) - 1):
+        for i in range((num_layers//2) - 1):
             num_nodes = ceil(ratio * num_nodes)
             self.embed_blocks.append(Block(hidden, hidden, hidden))
             self.pool_blocks.append(Block(hidden, hidden, num_nodes))
@@ -64,11 +64,12 @@ class DiffPool(torch.nn.Module):
 
     def forward(self, data):
         x, adj, mask = data.x, data.adj, data.mask
-
         s = self.pool_block1(x, adj, mask, add_loop=True)
         x = F.relu(self.embed_block1(x, adj, mask, add_loop=True))
         xs = [x.mean(dim=1)]
-        x, adj, link_loss, ent_loss = dense_diff_pool(x, adj, s, mask)
+
+
+        x, adj, link_loss, spec_loss = dense_diff_pool(x, adj, s, mask)
         #print(link_loss)
         #print(s.size())
         for i, (embed_block, pool_block) in enumerate(

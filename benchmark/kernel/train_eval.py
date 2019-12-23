@@ -25,7 +25,7 @@ def cross_validation_with_val_set(dataset,
     for fold, (train_idx, test_idx, val_idx) in enumerate(
             zip(*k_fold(dataset, folds))):
 
-        print("In {}-fold".format(fold))
+        #print("In {}-fold".format(fold))
         train_dataset = dataset[train_idx]
         test_dataset = dataset[test_idx]
         val_dataset = dataset[val_idx]
@@ -133,7 +133,7 @@ def train(model, optimizer, loader):
         link_loss.backward(retain_graph=True)
         spec_loss.backward(retain_graph=True)
         optimizer.step()
-    print("One TRAIN OVER::: Link Loss : {:.4f}, Spec Loss : {:.4f}".format(total_link/ len(loader.dataset),total_ent/ len(loader.dataset)))
+    #print("One TRAIN OVER::: Link Loss : {:.4f}, Spec Loss : {:.4f}".format(total_link/ len(loader.dataset),total_spec/ len(loader.dataset)))
     return total_loss / len(loader.dataset)
 
 

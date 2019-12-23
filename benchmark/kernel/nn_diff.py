@@ -60,15 +60,17 @@ def dense_diff_pool(x, adj, s, mask=None):
     new_degree = torch.diag_embed(new_adj.sum(dim=-1)) # 28 x 28
     o_lap = new_degree - new_adj # 5 x 5
     lap = degree - adj
-    import pdb
+
 
     new_lap = torch.matmul(inv_s.transpose(1,2), torch.matmul(o_lap, inv_s)) # 28 x 5
-    #pdb.set_trace()
-    x_eig = autograd.Variable(lap[:,:,0:1])
+    # x_eig = autograd.Variable(lap[:,:,0:1])
+    x_eig = torch.zeros(*lap[:,:,0:1].shape).to('cuda:0')
+    import pdb
     for i in range(lap.size(0)):
-        _, sec_eigen = lap[i,:,:].eig(eigenvectors=True) 
-        x_eig[i,:,0] = sec_eigen[:,1]
-    print(torch.norm(torch.matmul((lap-new_lap),x_eig),p=2))
+        value, sec_eigen = lap[i,:,:].eig(eigenvectors=True) 
+        pdb.set_trace()
+        x_eig[i,:,0] = sec_eigen[:,1].detach()
+
     lapnorm = torch.norm(torch.matmul((lap-new_lap), x_eig),p=2)
     xnorm = torch.norm(torch.matmul(x_eig.transpose(1,2), x_eig), p=2)
     spec_loss = arccosh(1 + 
@@ -87,7 +89,7 @@ def dense_diff_pool(x, adj, s, mask=None):
     link_loss = adj - torch.matmul(s, s.transpose(1, 2))
     link_loss = torch.norm(link_loss, p=2)
     link_loss = link_loss / adj.numel()
-    print(link_loss)
+
     ent_loss = (-s * torch.log(s + EPS)).sum(dim=-1).mean()
 
     return out, out_adj, link_loss, spec_loss
