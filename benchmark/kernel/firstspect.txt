@@ -1,0 +1,6 @@
+Script started on Thu Dec 26 06:10:56 2019
+$ ddd
+sh: 1: ddd: not found
+$ 
+
+Script done on Thu Dec 26 06:11:43 2019
